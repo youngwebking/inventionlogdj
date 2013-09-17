@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Machine Technicians{% endblock %}
+{% block extrahead %}
+{% endblock %}
+{% block content %}
+   <div id="employeelist" class="container left">
+      {% for mt in mts %}
+         <p><a href="/employees/machine-technicians/{{ mt.username }}">{{ mt }}</a></p>
+      {% endfor %}
+   </div>
+{% endblock %}

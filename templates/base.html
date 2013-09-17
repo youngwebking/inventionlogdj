@@ -1,0 +1,80 @@
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/main.css"/>
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+	<script src="{{ STATIC_URL }}js/main.js"></script>
+	<title>{% block title %}{% endblock %} | Inventonlog</title>
+	{% block extrahead %}
+	{% endblock %}
+	<script>
+		$(function() {
+		$( "#datepicker" ).datepicker();
+		});
+		
+		$(function() {
+		$( "#dialog" ).dialog();
+		});
+		
+		$(function() {
+		$( "#accordion" ).accordion(
+			{active: "a.default", alwaysOpen: true, autoHeight: true}
+		);
+		});
+  </script>
+</head>
+<body class="">
+{% load extra_tags %}
+<header class="">
+	<nav id="navbar" class="horizontal box center">
+		<ul id="nav-logo" class="horizontal box">
+			<li id="logo-link"><a href="/"><img src="{{ STATIC_URL }}img/inventionland_logo.png" id="logo"/></a></li>
+			<li id="logo-text"><a href="/" id="logo-text-link">INVENTIONLAND</a></li>
+		</ul>
+		<ul id="nav-links" class="horizontal box">
+		   <li id="nav-link"><a href="/employees/" ><p class="nav-button">Employees</p></a></li>
+		   <li id="nav-link"><a href="/projects/" ><p class="nav-button">Projects</p></a></li>
+		</ul>
+		<div class="fill"></div>
+		<ul id="login-links" class="horizontal box">
+			{% if user.is_authenticated %}
+				<li class="nav-dropdown">
+					<select id="toolbox" class="nav-button">
+						<option>Toolbox</option>
+						<option>Calendar</option>
+						<option>Planner</option>
+					</select>
+				</li>
+				{% with username=user.username job=user.employee.job %}
+					<li id="login-link"><a href="{% get_template_profile_link username job %}"><p class="nav-button">Profile</p></a></li>
+				{% endwith %}
+				<li id="login-link"><a href="/logout/"><p class="nav-button">Logout</p></a></li>
+			{% else %}
+		   	<li id="login-link"><a href="/login/"><p class="nav-button">Login</p></a></li>
+		   	<li id="login-link"><a href="/register/"><p class="nav-button">Register</p></a></li>
+		   {% endif %}
+		</ul>
+	</nav>
+</header>
+
+<container class="center box">
+	{% if messages %}
+		<ul class="flash-box">
+			{% for message in messages %}
+				<li{% if message.tags %} class="{{ message.tags }} flash"{% endif %}>{{ message }}</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
+	{% block content %}
+	{% endblock %}
+</container>
+<!--<footer class="container">
+	<ol id="footer-links">
+		<li><h4>General</h4></li>
+		<li class="footer-link"><a href="#">About</a></li>
+		<li class="footer-link"><a href="#">Contact</a></li>
+	</ol>
+</footer>-->
+</body>
+</html>

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+{% block extrahead %}
+<link rel="stylesheet" type="text/css" href="/static/css/form.css">
+{% endblock %}
+{% block content %}
+<form class="form-container right" action="" method="post">
+	{% csrf_token %}
+	<ol>
+	<li><div class="register_div left">
+		<!--{#% if form.name.errors %}<p class="form-error">{{ form.name.errors }}</p>{#% endif %}-->
+		<p><label for="name"{% if form.name.errors %} class="form-error"{% endif %}>Name:*</label></p>
+		<p>{{ form.name }}</p>
+	</div></li>
+	<li><div class="register_div left">
+		<p><label for="email"{% if form.email.errors %} class="form-error"{% endif %}>Email:*</label></p>
+		<p>{{ form.email }}</p>
+	</div></li>
+	<li><div class="register_div left">
+		<p><label for="job"{% if form.job.errors %} class="form-error"{% endif %}>Job:*</label></p>
+		<p>{{ form.job }}</p>
+	</div></li>
+	<li><div class="register_div left">
+		<p><label for="question"{% if form.question.errors %} class="form-error"{% endif %}>Security Question:*</label></p>
+		<p>{{ form.question }}</p>
+	</div></li>
+	<li><div class="register_div left">
+		<p><label for="answer"{% if form.answer.errors %} class="form-error"{% endif %}>Answer:*</label></p>
+		<p>{{ form.answer }}</p>
+	</div></li>
+	<li><div class="register_div left">
+		<p><label for="pic"{% if form.pic.errors %} class="form-error"{% endif %}>Profile Picture:</label></p>
+		<p>{{ form.pic }}</p>
+	</div></li>
+	<li>
+		<br />
+		<p>
+			Terms of Agreement
+			<a href="#" onclick="show_terms()">(alert)</a>
+			<a href="#" onclick="ShowTermsPopUp()">(new window)</a>
+		</p>
+		<br />
+		<p><!--{{ form.agree }}--> Clicking the Submit button means you agree to the above terms.</p>
+	</li>
+	<li><p><input type="submit" value="Submit!" class="btn btn-large btn-primary"></p></li>
+	</ol>
+</form>
+{% endblock %}

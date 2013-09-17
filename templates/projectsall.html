@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Projects{% endblock %}
+{% block extrahead %}
+{% endblock %}
+{% block content %}
+   <div id="projectlist" class="container left">
+      {% for project in projects %}
+         <p><a href="/projects/{{ project.slug }}">{{ project }}</a></p>
+      {% endfor %}
+   </div>
+{% endblock %}

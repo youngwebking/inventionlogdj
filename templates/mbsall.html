@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Model Builders{% endblock %}
+{% block extrahead %}
+{% endblock %}
+{% block content %}
+   <div id="employeelist" class="container left">
+      {% for mb in mbs %}
+         <p><a href="/employees/model-builders/{{ mb.username }}">{{ mb }}</a></p>
+      {% endfor %}
+   </div>
+{% endblock %}

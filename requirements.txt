@@ -1,1 +1,6 @@
 Django==1.5.1
+MySQLdb
+_mysql
+re
+os
+sys

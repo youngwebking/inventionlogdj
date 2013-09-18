@@ -67,15 +67,15 @@ def EmployeeRegistration(request):
 			
 			#employee = Employee(user=user, name=form.cleaned_data['name'], question=form.cleaned_data['question'], answer=form.cleaned_data['answer'], job=form.cleaned_data['job'])
 			if form.cleaned_data['job'] == 'M':
-				employee = Manager(user=user, name=name, username=username, question=form.cleaned_data['question'], answer=answer, job=form.cleaned_data['job'], pic=form.cleaned_data['pic'])
+				employee = Manager(user=user, name=name, username=username, question=form.cleaned_data['question'], answer=answer, job=form.cleaned_data['job'])
 			elif form.cleaned_data['job'] == 'P':
-				employee = ProductionManager(user=user, name=name, username=username, question=form.cleaned_data['question'], answer=answer, job=form.cleaned_data['job'], pic=form.cleaned_data['pic'])
+				employee = ProductionManager(user=user, name=name, username=username, question=form.cleaned_data['question'], answer=answer, job=form.cleaned_data['job'])
 			elif form.cleaned_data['job'] == 'D':
-				employee = Draftsman(user=user, name=name, username=username, question=form.cleaned_data['question'], answer=answer, job=form.cleaned_data['job'], pic=form.cleaned_data['pic'])
+				employee = Draftsman(user=user, name=name, username=username, question=form.cleaned_data['question'], answer=answer, job=form.cleaned_data['job'])
 			elif form.cleaned_data['job'] == 'T':
-				employee = MachineTechnician(user=user, name=name, username=username, question=form.cleaned_data['question'], answer=answer, job=form.cleaned_data['job'], pic=form.cleaned_data['pic'])
+				employee = MachineTechnician(user=user, name=name, username=username, question=form.cleaned_data['question'], answer=answer, job=form.cleaned_data['job'])
 			elif form.cleaned_data['job'] == 'B':
-				employee = ModelBuilder(user=user, name=name, username=username, question=form.cleaned_data['question'], answer=answer, job=form.cleaned_data['job'], pic=form.cleaned_data['pic'])
+				employee = ModelBuilder(user=user, name=name, username=username, question=form.cleaned_data['question'], answer=answer, job=form.cleaned_data['job'])
 			employee.slug = slugify(name)
 			employee.save()
 			employee = authenticate(username=username, password=answer)

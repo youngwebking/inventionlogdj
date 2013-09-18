@@ -29,10 +29,6 @@ class Employee(models.Model):
 	status = models.CharField(max_length=1, choices=STATUS, default='A')
 	rating = models.DecimalField(max_digits=2, decimal_places=1, default=2.5)
 	
-	pic_height=models.PositiveIntegerField(default=100, editable=False)
-	pic_width=models.PositiveIntegerField(default=100, editable=False)
-	pic = models.ImageField(upload_to="employees/pics", blank=True, null=True)
-	
 	def __unicode__(self):
 		return self.name
 		

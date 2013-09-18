@@ -17,7 +17,6 @@ class RegistrationForm(ModelForm):
 	question = forms.CharField(label=(u'Question'))
 	answer = forms.CharField(label=(u'Answer'))
 	job = forms.ChoiceField(label=(u'Job'), choices=JOB_CHOICES)
-	pic = forms.ImageField(label=(u'Profile Picture'), required=False)
 	
 	class Meta:
 		model = Employee

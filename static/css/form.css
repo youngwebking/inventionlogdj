@@ -41,8 +41,20 @@
 	height: 20px;
 	margin: 3px;
 }
-
-
+#id_category{
+	border-radius: 3px;
+	border: 1px solid #111;
+	width: 200px;
+	height: 20px;
+	margin: 3px 0 0 0;
+	background-color: #fff;
+}
+#id_searchbox{
+	border-radius: 3px;
+	border: 1px solid #111;
+	width: 200px;
+	height: 20px;
+	margin: 0;
 
 
 

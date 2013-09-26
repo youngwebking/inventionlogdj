@@ -4,10 +4,7 @@
 {% endblock %}
 {% block extracontent %}
 {% if user.employee.username == pm.username %}
-	<form action="" method="post">
-		{% csrf_token %}
-		<input class="btn" type="submit" value="Add New Project">
-	</form>
+	
 	{% else %}
 		
    {% endif %}

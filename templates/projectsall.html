@@ -1,11 +1,26 @@
 {% extends "base.html" %}
 {% block title %}Projects{% endblock %}
 {% block extrahead %}
+	<link rel="stylesheet" type="text/css" href="/static/css/form.css">
 {% endblock %}
 {% block content %}
-   <div id="projectlist" class="container left">
+<div class="horizontal box">
+   <div id="projectlist" class="container box fill">
+   	<ol>
       {% for project in projects %}
-         <p><a href="/projects/{{ project.slug }}">{{ project }}</a></p>
+         <li><a href="/projects/{{ project.slug }}">{{ project }}</a></li>
       {% endfor %}
+     	</ol>
    </div>
+   <aside id="project-search" class="container box">
+   	<form action="" method="post">
+   		{% csrf_token %}
+   		<p>
+   			Keywords: {{ form.searchbox }}<br>
+   			Status: {{ form.category }}<br>
+   			<input class="btn" type="submit" value="Search" />
+   		</p>
+   	</form>
+   </aside>
+</div>
 {% endblock %}

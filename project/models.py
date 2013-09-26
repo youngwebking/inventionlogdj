@@ -6,6 +6,19 @@ DRAFTS   = "pics/drafts"
 MODELS   = "pics/models"
 REVOLVES = "revolves"
 
+class PotentialProject(models.Model):
+	project_name = models.CharField(max_length=50, unique=True)
+	slug = models.SlugField(blank=True)
+	number = models.IntegerField()
+	patent_file = models.FileField(upload_to=PATENTS)
+	client_name = models.CharField(max_length=50)
+	client_email = models.EmailField(blank=True, null=True)
+	client_phone = models.CharField(max_length=13, blank=True, null=True)
+	assigned = models.BooleanField()
+	
+	def __unicode__(self):
+		return self.project_name
+
 STATUS = (
 	('C', 'Complete'),
 	('P', 'Pending'),
@@ -56,6 +69,7 @@ class Project(models.Model):
 	#group = models.CharField(max_length=1, choices=GROUP_CHOICES)
 	patentImage1 = models.FileField(upload_to=PATENTS, blank=True, null=True)
 	patentImage2 = models.FileField(upload_to=PATENTS, blank=True, null=True)
+	patentFile = models.FileField(upload_to=PATENTS, blank=True, null=True)
 	stl = models.ForeignKey("Stl", blank=True, null=True)
 	dxf = models.ForeignKey("Dxf", blank=True, null=True)
 	revolve = models.ForeignKey("Revolve", blank=True, null=True)

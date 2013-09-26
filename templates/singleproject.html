@@ -36,14 +36,14 @@
 	<div id="accordion">
 		<!--GENERAL----------------------------------------------------->
 		<h3>General</h3>
-      <div>
+      <div id="accordion-tab general-tab">
       	<p>Production Manager in charge: {% if project.productionManager != None %}<a href="/employees/production-managers/{{ project.productionManager.username }}">{{ project.productionManager }}</a>{% else %}None{% endif %}</p>
       {% if project.accepted %}
 		   <p>Project draftsman: {% if project.draftsman != None %}<a href="/employees/draftsmen/{{ project.draftsman.username }}">{{ project.draftsman }}</a>{% else %}None{% endif %}</p>
 		   <p>Project machine technician: {% if project.machineTech != None %}<a href="/employees/machine-technicians/{{ project.machineTech.username }}">{{ project.machineTech }}</a>{% else %}None{% endif %}</p>
 		   <p>Project model builder: {% if project.modelBuilder != None %}<a href="/employees/model-builders/{{ project.modelBuilder.username }}">{{ project.modelBuilder }}</a>{% else %}None{% endif %}</p>
 		{% endif %}
-			<p>Patent Image: {% if project.patentImage1.url != None %}<a href="{{ project.patentImage1.url }}"><img class="thumb" src="{{ project.patentImage1.url }}" /></a>{% else %}None{% endif %}</p>
+			<p>Patent Image: {% if project.patentFile.url != None %}<a href="{{ project.patentFile.url }}"><br /><img class="thumb" src="{{ project.patentFile.url }}" /></a>{% else %}None{% endif %}</p>
 		</div>
 		
 		<!--DRAFTS----------------------------------------------------->

@@ -1,6 +1,7 @@
 from django.db import models
 from django.template.defaultfilters import slugify
-from employee.models import Draftsman, MachineTechnician, ModelBuilder
+from django.contrib.auth.models import User
+from employee.models import ProductionManager, Draftsman, MachineTechnician, ModelBuilder
 from project.models import Project
 
 def get_random_employee(job):
@@ -16,7 +17,17 @@ def get_random_employee(job):
 def get_next_employee(job):
 	employee = None
 	least = 100
-	if job == "D":
+	if job == "P":
+		pms = ProductionManager.objects.all()
+		for pm in pms:
+			projects = Project.objects.filter(productionManager=pm)
+			projects = projects.filter(finalApproved=False)
+			count = projects.count()
+			if count < least and pm.status == 'A':
+				least = count
+				employee = pm
+				
+	elif job == "D":
 		draftsmen = Draftsman.objects.all()
 		for draftsman in draftsmen:
 			projects = Project.objects.filter(draftsman=draftsman)
@@ -64,5 +75,7 @@ def get_profile_link(request):
 		profile = "/employees/machine-technicians/" + slug
 	elif request.user.employee.job == 'B':
 		profile = "/employees/model-builders/" + slug
+	elif User.username == 'admin':
+		profile = "/admin-profile/"
 	if profile != None:
 		return profile

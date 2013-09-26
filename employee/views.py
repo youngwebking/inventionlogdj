@@ -6,9 +6,9 @@ from employee.forms import RegistrationForm, LoginForm1, LoginForm2
 from django.contrib.auth import authenticate, login, logout
 from django.template.defaultfilters import slugify
 from django.contrib import messages
-from employee.helpers import get_profile_link
+from employee.helpers import get_next_employee, get_profile_link
 from employee.models import Employee, Manager, ProductionManager, Draftsman, MachineTechnician, ModelBuilder
-from project.models import Project
+from project.models import PotentialProject, Project
 from django import template
 import MySQLdb
 import _mysql
@@ -145,6 +145,30 @@ def LogoutRequest(request):
 	logout(request)
 	return HttpResponseRedirect('/')
 
+#admin--------------------------------------------------------------------
+def admin(request):
+	if request.user.is_superuser:
+		admin = User.objects.get(username='admin')
+		projects = Project.objects.all()
+		pending_projects = projects.filter(status='P')
+		current_projects = projects.filter(status='I')
+		complete_projects = projects.filter(status='C')
+		context = {'admin':admin, 'projects': projects,'pending':pending_projects, 'current':current_projects,'complete':complete_projects}
+		if request.method == 'POST':
+			new_projects = PotentialProject.objects.filter(assigned=False)
+			potential_project = new_projects.order_by('?')[0]
+			potential_project.assigned = True;
+			project_name = potential_project.project_name
+			slug = potential_project.slug
+			number = potential_project.number
+			patent_file = potential_project.patent_file
+			pm = get_next_employee('P')
+			project = Project(name=project_name,slug=slug,number=number,status='P',patentFile=patent_file,productionManager=pm)
+			project.save()
+			potential_project.save()
+		return render_to_response('admin.html', context, context_instance=RequestContext(request))
+	return HttpResponseRedirect('/')
+	
 #UPPER MANAGEMENT---------------------------------------------------------
 def ManagersAll(request):
 	managers = Manager.objects.all()
@@ -178,35 +202,8 @@ def SpecificPM(request, username):
 	except:
 		messages.error(request, 'That production manager does not exist!')
 		raise Http404("That production manager does not exist!")
-	if slugify(request.user.username) == username:
-		if request.method == 'POST':
-			try:
-				conn = MySQLdb.connect('localhost', 'root', 'chewy')
-				with conn:
-					try:
-						cur = conn.cursor()
-						cur.execute("USE projects")
-						cur.execute("SELECT project_name FROM projects WHERE assigned='False'")
-						result = cur.fetchone()
-						project_name = `result`[2:-3]
-						cur.execute("SELECT patent_number FROM projects WHERE project_name='" + project_name + "'")
-						result2 = cur.fetchone()
-						patent_number = `result2`[1:-3]
-						cur.execute ("UPDATE projects SET assigned='True' WHERE project_name='%s' " % (project_name))
-					
-						slug = slugify(project_name)
-						project = Project(name=project_name, slug=slug, number=patent_number, status="P", productionManager=pm)
-						project.save()
-					except ValueError:
-						messages.add_message(request, messages.ERROR, 'There are no more unused projects in the database.')
-			
-			except _mysql.Error, e:
-			  	print "Error %d: %s" % (e.args[0], e.args[1])
-				sys.exit(1)
-
-			finally:
-				if conn:
-					conn.close()
+	if request.user.username == username:
+		pass
 	context = {'pm': pm, 'employee': employee, 'projects': projects, 'pending': pending_projects}
 	return render_to_response('singlepm.html', context, context_instance=RequestContext(request))
 		

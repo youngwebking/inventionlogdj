@@ -4,8 +4,9 @@ from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.template.defaultfilters import slugify
 from project.models import Project, Stl, Dxf, Image
-from project.forms import UploadDraftForm, UploadModelForm
+from project.forms import UploadDraftForm, UploadModelForm, ProjectSearchForm
 from employee.helpers import get_random_employee, get_next_employee
+import re
 
 # UPLOAD DRAFT FILES------------------------------------------------------------------
 def upload_draft(request, projectslug):
@@ -107,10 +108,7 @@ def upload_model(request, projectslug):
 				form = UploadModelForm()
 				context = {'form': form, 'project': project}
 				return render_to_response('upload-model.html', context, context_instance=RequestContext(request))
-		else:
-			return HttpResponseRedirect('/')
-	else:
-		return HttpResponseRedirect('/')
+	return HttpResponseRedirect('/')
 
 # ACCEPT PROJECT---------------------------------------------------------------------------------------------
 def AcceptProject(request, projectslug):
@@ -163,8 +161,24 @@ def FinalApprove(request, projectslug):
 # PROJECTS-------------------------------------
 def ProjectsAll(request):
 	projects = Project.objects.all()
-	context = {'projects': projects}
-	return render_to_response('../templates/projectsall.html', context, context_instance=RequestContext(request))
+	if request.method == 'POST':
+		form = ProjectSearchForm(request.POST)
+		if form.is_valid():
+			keywords = form.cleaned_data['searchbox']
+			#keywords = re.split(r' ', keywords)
+			projects = projects.filter(name__icontains=keywords)
+			if form.cleaned_data['category'] == 'P':
+				projects = projects.filter(status='P')
+			elif form.cleaned_data['category'] == 'I':
+				projects = projects.filter(status='I')
+			elif form.cleaned_data['category'] == 'C':
+				projects = projects.filter(status='C')
+			context = {'projects':projects, 'form':form, 'keywords':keywords}
+			return render_to_response('projectsall.html', context, context_instance=RequestContext(request))
+	else:
+		form = ProjectSearchForm()
+		context = {'projects':projects, 'form':form}
+		return render_to_response('projectsall.html', context, context_instance=RequestContext(request))
 	
 def SpecificProject(request, projectslug):
 	project = Project.objects.get(slug=projectslug)

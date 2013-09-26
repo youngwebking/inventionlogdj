@@ -22,7 +22,9 @@
 				</select>
 			</form>
 			<br />
+		
 		{% else %}
+			{% if employee %}
 			<p>Current Projects:
 				<ol class="center">
 					{% for project in projects %}
@@ -31,12 +33,14 @@
 				</ol>
 			</p>
 			<br />
+			{% endif %}
+			
 		{% endif %}
 		{% block extracontent %}
 		{% endblock %}
 	</div>
 	{% if user.employee.username == employee.username and user.employee.job != 'M' %}
-		<div id="queue" class="container box">
+		<aside id="queue" class="container box">
 			<h4>Current Projects</h4>
 			<ol class="center">
 				{% for project in projects %}
@@ -50,16 +54,7 @@
 					<li><a href="/projects/{{ pend.slug }}">{{ pend }}</a></li>
 				{% endfor %}
 			</ol>
-		</div>
-	{% elif user.employee.username == employee.username and user.employee.job == 'M' %}
-		<div id="queue" class="container box">
-			<h4>Privaleges</h4>
-			<ol class="center">
-				<!--{#% for project in projects %}
-					<li><a href="/projects/{{ project.slug }}">{{ project }}</a></li>
-				{#% endfor %}-->
-			</ol>
-		</div>
+		</aside>
 	{% endif %}
 </div>
 {% endblock %}

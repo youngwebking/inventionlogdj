@@ -46,9 +46,13 @@
 						<option>Planner</option>
 					</select>
 				</li>
+				{% if user.username == 'admin' %}
+					<li id="login-link"><a href="/admin-profile"><p class="nav-button">Profile</p></a></li>
+				{% else %}
 				{% with username=user.username job=user.employee.job %}
 					<li id="login-link"><a href="{% get_template_profile_link username job %}"><p class="nav-button">Profile</p></a></li>
 				{% endwith %}
+				{% endif %}
 				<li id="login-link"><a href="/logout/"><p class="nav-button">Logout</p></a></li>
 			{% else %}
 		   	<li id="login-link"><a href="/login/"><p class="nav-button">Login</p></a></li>

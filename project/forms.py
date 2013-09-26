@@ -14,3 +14,15 @@ class UploadModelForm(forms.Form):
 	leftView = forms.ImageField(required=False)
 	frontView = forms.ImageField(required=False)
 	rightView = forms.ImageField(required=False)
+	
+class ProjectSearchForm(forms.Form):
+	
+	CATEGORY_CHOICES = (
+		('A', 'All'),
+		('P', 'Pending'),
+		('I', 'In Progress'),
+		('C', 'Complete'),
+	)
+	
+	searchbox = forms.CharField(max_length=100,required=False)
+	category = forms.ChoiceField(choices=CATEGORY_CHOICES)

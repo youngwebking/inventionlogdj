@@ -74,6 +74,10 @@ header{
 footer{
 	max-width: 1000px;
 }
+aside{
+	width: 300px;
+	margin-left: 6px;
+}
 #nav-logo li{
 	
 }
@@ -124,11 +128,13 @@ footer{
 	-webkit-box-flex: 1;
 }
 #queue{
-	width: 300px;
-	margin-left: 6px;
+	
 }
 #projectlist{
-	width: 500px;
+	
+}
+#project-search{
+	width: 200px;
 }
 #singleproject-row{
 	margin-top: 3px;
@@ -177,6 +183,9 @@ footer{
 	margin-top: -2px;
 	padding: 0;
 	height: 28px;
+}
+#general-tab{
+	height: 300px;
 }
 .nav-dropdown{
 	margin-top: -2px;

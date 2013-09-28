@@ -1,0 +1,37 @@
+{% extends "profile.html" %}
+{% block title %}{{ admin.username }}{% endblock %}
+{% block extrahead %}
+{% endblock %}
+{% block extracontent %}
+<h1>Welcome, admin!</h1>
+<div id="accordion">
+	<h3>Pending Projects</h3>
+	<div>
+		<ol>
+			{% for pend in pending %}
+				<li><a href="/projects/{{ pend.slug }}">{{ pend }}</a></li>
+			{% endfor %}
+		</ol>
+	</div>
+	<h3>Current Projects</h3>
+	<div>
+		<ol>
+			{% for curr in current %}
+				<li><a href="/projects/{{ curr.slug }}">{{ curr }}</a></li>
+			{% endfor %}
+		</ol>
+	</div>
+	<h3>Completed Projects</h3>
+	<div>
+		<ol>
+			{% for comp in complete %}
+				<li><a href="/projects/{{ comp.slug }}">{{ comp }}</a></li>
+			{% endfor %}
+		</ol>
+	</div>
+	<h3>Edit</h3>
+	<form action="" method="post">
+		{% csrf_token %}
+		<input class="btn" type="submit" value="Add New Project">
+	</form>
+{% endblock %}

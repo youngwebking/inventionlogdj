@@ -87,6 +87,22 @@ aside{
 #login-links li{
 	margin-left: 3px;
 }
+#accordion div a:link{
+	color: blue;
+	text-decoration: none;
+}
+#accordion div a:hover{
+	color: blue;
+	text-decoration: none;
+}
+#accordion div a:visited{
+	color: blue;
+	text-decoration: none;
+}
+#accordion div a:active{
+	color: blue;
+	text-decoration: none;
+}
 #navbar{
 	width:1000px;
 	padding-top: 0px;

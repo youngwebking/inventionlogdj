@@ -12,6 +12,12 @@ def terms(request):
 	
 def EmployeesAll(request):
 	context = None
+	try:
+		q = request.GET['q']
+		context = {'q':q}
+	except:
+		pass
+		
 	return render_to_response('employeesall.html', context, context_instance=RequestContext(request))
 
 def help(request):

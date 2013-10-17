@@ -2,10 +2,11 @@ from django.conf.urls import patterns, include, url
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-
-# Uncomment the next two lines to enable the admin:
+from dajaxice.core import dajaxice_autodiscover, dajaxice_config
 from django.contrib import admin
+
 admin.autodiscover()
+dajaxice_autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
@@ -13,7 +14,7 @@ urlpatterns = patterns('',
     # url(r'^inventionlog/', include('inventionlog.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+   url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
    url(r'^admin/', include(admin.site.urls)),
@@ -23,7 +24,7 @@ urlpatterns = patterns('',
    (r'^terms/$', 'static_pages.views.terms'),
    (r'^help/$', 'static_pages.views.help'),
    (r'^admin-profile/$', 'employee.views.admin'),
-   (r'^employees/$', 'static_pages.views.EmployeesAll'),
+   (r'^employees/$', 'static_pages.views.employeesAll'),
    (r'^employees/upper-management/$', 'employee.views.ManagersAll'),
    (r'^employees/upper-management/(?P<username>.*)/$', 'employee.views.SpecificManager'),
    (r'^employees/production-managers/$', 'employee.views.PMsAll'),
@@ -40,13 +41,19 @@ urlpatterns = patterns('',
 	(r'^projects/model-upload/(?P<projectslug>.*)/$', 'project.views.upload_model'),
 	(r'^projects/accept/(?P<projectslug>.*)/$', 'project.views.AcceptProject'),
 	(r'^projects/approve-draft/(?P<projectslug>.*)/$', 'project.views.ApproveDraft'),
+	(r'^projects/reject-draft/(?P<projectslug>.*)/$', 'project.views.RejectDraft'),
 	(r'^projects/approve-prototype/(?P<projectslug>.*)/$', 'project.views.ApprovePrototype'),
+	(r'^projects/reject-prototype/(?P<projectslug>.*)/$', 'project.views.RejectPrototype'),
 	(r'^projects/approve-model/(?P<projectslug>.*)/$', 'project.views.ApproveModel'),
+	(r'^projects/reject-model/(?P<projectslug>.*)/$', 'project.views.RejectModel'),
 	(r'^projects/final-approve/(?P<projectslug>.*)/$', 'project.views.FinalApprove'),
 	(r'^projects/(?P<projectslug>.*)/$', 'project.views.SpecificProject'),
 	#(r'^add-project/$', 'project.views.AddProject'),
 	(r'^register/$', 'employee.views.EmployeeRegistration'),
 	(r'^login/(?P<username>.*)$', 'employee.views.Login'),
 	(r'^logout/$', 'employee.views.LogoutRequest'),
-	#(r'^profile/$', 'employee.views.Profile'),
+	(r'^music-player/$', 'music.views.musicPlayer'),
+	(r'^music-player/song/$', 'music.views.song'),
+	(r'^music-player/playlist/$', 'music.views.playlist'),
+	(r'^music-player/upload-song/$', 'music.views.UploadSong'),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

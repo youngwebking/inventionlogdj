@@ -86,8 +86,11 @@ class Project(models.Model):
 	percent_complete = models.IntegerField(default=0)
 	accepted = models.BooleanField()
 	draftApproved = models.BooleanField()
+	draftRejected = models.BooleanField()
 	prototypeApproved = models.BooleanField()
+	prototypeRejected = models.BooleanField()
 	modelApproved = models.BooleanField()
+	modelRejected = models.BooleanField()
 	finalApproved = models.BooleanField()
 	
 	def accept_project(self, d, t, b):
@@ -104,16 +107,28 @@ class Project(models.Model):
 		self.percent_complete = 25
 		self.save()
 		
+	def reject_draft(self):
+		self.draftRejected = True
+		self.save()
+		
 	def approve_prototype(self):
 		self.prototypeApproved = True
 		self.percent_complete = 50
 		self.save()
-		
+	
+	def reject_prototype(self):
+		self.prototypeRejected = True
+		self.save()
+	
 	def approve_model(self):
 		self.modelApproved = True
 		self.percent_complete = 75
 		self.save()
 		
+	def reject_model(self):
+		self.modelRejected = True
+		self.save()
+	
 	def final_approve(self):
 		self.finalApproved = True
 		self.status = 'C'

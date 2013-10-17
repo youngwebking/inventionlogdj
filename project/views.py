@@ -1,6 +1,7 @@
 from project import helpers
 from django.shortcuts import render_to_response
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
+from django.utils import simplejson
 from django.template import RequestContext
 from django.template.defaultfilters import slugify
 from project.models import Project, Stl, Dxf, Image
@@ -12,7 +13,7 @@ import re
 def upload_draft(request, projectslug):
 	project = Project.objects.get(slug=projectslug)
 	if request.user.is_authenticated():
-		if request.user.username == project.draftsman.username:
+		if request.user.username == project.draftsman.username or request.user.username == project.productionManager.username:
 			if request.method == 'POST':
 				form = UploadDraftForm(request.POST, request.FILES)
 				if form.is_valid():
@@ -43,7 +44,7 @@ def upload_draft(request, projectslug):
 def upload_model(request, projectslug):
 	project = Project.objects.get(slug=projectslug)
 	if request.user.is_authenticated():
-		if request.user.username == project.modelBuilder.username:
+		if request.user.username == project.modelBuilder.username or request.user.username == project.productionManager.username:
 			if request.method == 'POST':
 				form = UploadModelForm(request.POST, request.FILES)
 				if form.is_valid():
@@ -130,6 +131,15 @@ def ApproveDraft(request, projectslug):
 		return HttpResponseRedirect('/projects/' + projectslug + '/')
 	else:
 		return HttpResponseRedirect('/')
+		
+# REJECT DRAFTS---------------------------------------------------------------------------------------------
+def RejectDraft(request, projectslug):
+	project = Project.objects.get(slug=projectslug)
+	if request.user.username == project.productionManager.username:
+		project.reject_draft()
+		return HttpResponseRedirect('/projects/' + projectslug + '/')
+	else:
+		return HttpResponseRedirect('/')
 
 # APPROVE PROTOTYPE---------------------------------------------------------------------------------------------
 def ApprovePrototype(request, projectslug):
@@ -140,11 +150,29 @@ def ApprovePrototype(request, projectslug):
 	else:
 		return HttpResponseRedirect('/')
 		
+# REJECT PROTOTYPE---------------------------------------------------------------------------------------------
+def RejectPrototype(request, projectslug):
+	project = Project.objects.get(slug=projectslug)
+	if request.user.username == project.productionManager.username:
+		project.reject_prototype()
+		return HttpResponseRedirect('/projects/' + projectslug + '/')
+	else:
+		return HttpResponseRedirect('/')
+
 # APPROVE MODELS---------------------------------------------------------------------------------------------
 def ApproveModel(request, projectslug):
 	project = Project.objects.get(slug=projectslug)
 	if request.user.username == project.productionManager.username:
 		project.approve_model()
+		return HttpResponseRedirect('/projects/' + projectslug + '/')
+	else:
+		return HttpResponseRedirect('/')
+		
+# REJECT MODEL---------------------------------------------------------------------------------------------
+def RejectModel(request, projectslug):
+	project = Project.objects.get(slug=projectslug)
+	if request.user.username == project.productionManager.username:
+		project.reject_model()
 		return HttpResponseRedirect('/projects/' + projectslug + '/')
 	else:
 		return HttpResponseRedirect('/')
@@ -165,7 +193,6 @@ def ProjectsAll(request):
 		form = ProjectSearchForm(request.POST)
 		if form.is_valid():
 			keywords = form.cleaned_data['searchbox']
-			#keywords = re.split(r' ', keywords)
 			projects = projects.filter(name__icontains=keywords)
 			if form.cleaned_data['category'] == 'P':
 				projects = projects.filter(status='P')

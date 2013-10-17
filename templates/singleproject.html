@@ -48,7 +48,7 @@
 		
 		<!--DRAFTS----------------------------------------------------->
 		{% if project.accepted %}	
-		<h3>{% if project.draftApproved %}<b class="green">{% elif project.stl == None or project.dxf == None %}<b class="red">{% endif %}Drafts:</b>{% if project.draftApproved %} Approved{% endif %}</h3>
+		<h3>{% if project.draftApproved %}<b class="green">{% elif project.stl == None or project.dxf == None or project.draftRejected %}<b class="red">{% endif %}Drafts:</b>{% if project.draftApproved %} Approved{% elif project.draftRejected %} Rejected{% endif %}</h3>
 			<div>
 		   <p>Stl File: {% if project.stl != None %}<a href="{{ project.stl.stl.url }}">download</a>{% else %}None{% endif %}</p>
 		   <p>Dxf File: {% if project.dxf != None %}<a href="{{ project.dxf.dxf.url }}">download</a>{% else %}None{% endif %}</p>
@@ -56,7 +56,7 @@
 		
 		<!--MODEL----------------------------------------------------->
 		{% if project.draftApproved %}	
-		<h3>{% if project.modelApproved %}<b class="green">{% elif project.modelImgTop == None or project.modelImg34 == None or project.modelImgFront == None or project.modelImgRight == None %}<b class="red">{% endif %}Model:</b>{% if project.modelApproved %} Approved{% endif %}</h3>
+		<h3>{% if project.modelApproved %}<b class="green">{% elif project.modelImgTop == None or project.modelImg34 == None or project.modelImgFront == None or project.modelImgRight == None  or project.modelRejected %}<b class="red">{% endif %}Model:</b>{% if project.modelApproved %} Approved{% elif project.modelRejected %} Rejected{% endif %}</h3>
 		<div id="model-images">
 			<div id="singleproject-row" class="horizontal box">
 		   <div id="exampleView" class="fill box modelView">
@@ -136,13 +136,25 @@
 						{% csrf_token %}
 						<input type="submit" value="Approve Drafts" class="btn" />
 					</form>
+					<form action="/projects/reject-draft/{{ project.slug }}/" method="post">
+						{% csrf_token %}
+						<input type="submit" value="Reject Drafts" class="btn" />
+					</form>
 					<form action="/projects/approve-prototype/{{ project.slug }}/" method="post">
 						{% csrf_token %}
 						<input type="submit" value="Approve Prototype Parts" class="btn" />
 					</form>
+					<form action="/projects/reject-draft/{{ project.slug }}/" method="post">
+						{% csrf_token %}
+						<input type="submit" value="Reject Prototype" class="btn" />
+					</form>
 					<form action="/projects/approve-model/{{ project.slug }}/" method="post">
 						{% csrf_token %}
-						<input type="submit" value="Approve Models" class="btn" />
+						<input type="submit" value="Approve Model" class="btn" />
+					</form>
+					<form action="/projects/reject-draft/{{ project.slug }}/" method="post">
+						{% csrf_token %}
+						<input type="submit" value="Reject Model" class="btn" />
 					</form>
 					{% if project.draftApproved and project.prototypeApproved and project.modelApproved %}
 					<form action="/projects/final-approve/{{ project.slug }}/" method="post">

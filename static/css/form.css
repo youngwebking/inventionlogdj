@@ -1,9 +1,15 @@
+#id_*{
+	opacity: 1;
+	background-color: #fff;
+}
 #id_name{
 	border-radius: 3px;
 	border: 1px solid #111;
 	width: 200px;
 	height: 20px;
 	margin: 3px;
+	background-color: #fff;
+	opacity: 1;
 }
 #id_username{
 	border-radius: 3px;
@@ -11,6 +17,8 @@
 	width: 200px;
 	height: 20px;
 	margin: 3px;
+	background-color: #fff;
+	opacity: 1;
 }
 #id_email{
 	border-radius: 3px;
@@ -18,6 +26,8 @@
 	width: 200px;
 	height: 20px;
 	margin: 3px;
+	background-color: #fff;
+	opacity: 1;
 }
 #id_job{
 	border-radius: 3px;
@@ -26,6 +36,7 @@
 	height: 20px;
 	margin: 3px;
 	background-color: #fff;
+	opacity: 1;
 }
 #id_question{
 	border-radius: 3px;
@@ -33,6 +44,8 @@
 	width: 200px;
 	height: 20px;
 	margin: 3px;
+	background-color: #fff;
+	opacity: 1;
 }
 #id_answer{
 	border-radius: 3px;
@@ -40,6 +53,8 @@
 	width: 200px;
 	height: 20px;
 	margin: 3px;
+	background-color: #fff;
+	opacity: 1;
 }
 #id_category{
 	border-radius: 3px;
@@ -48,6 +63,7 @@
 	height: 20px;
 	margin: 3px 0 0 0;
 	background-color: #fff;
+	opacity: 1;
 }
 #id_searchbox{
 	border-radius: 3px;
@@ -55,8 +71,18 @@
 	width: 200px;
 	height: 20px;
 	margin: 0;
-
-
+	background-color: #fff;
+	opacity: 1;
+}
+#id_artist{
+	border-radius: 3px;
+	border: 1px solid #111;
+	width: 200px;
+	height: 20px;
+	margin: 0;
+	background-color: #fff;
+	opacity: 1;
+}
 
 
 

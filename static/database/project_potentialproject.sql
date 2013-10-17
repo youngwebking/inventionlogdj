@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 21, 2013 at 11:51 AM
+-- Generation Time: Sep 28, 2013 at 08:48 PM
 -- Server version: 5.5.32
 -- PHP Version: 5.3.10-1ubuntu3.8
 
@@ -46,12 +46,12 @@ CREATE TABLE IF NOT EXISTS `project_potentialproject` (
 --
 
 INSERT INTO `project_potentialproject` (`id`, `project_name`, `slug`, `number`, `patent_file`, `client_name`, `client_email`, `client_phone`, `assigned`) VALUES
-(1, 'Android OS', 'android-os', 12345678, 'pics/patents/idea.png', 'Will Huffmyer', 'williehuffmyer@gmail.com', '412-496-1545', 1),
+(1, 'Android OS', 'android-os', 12345678, 'pics/patents/idea.png', 'Will Huffmyer', 'williehuffmyer@gmail.com', '412-496-1545', 0),
 (2, 'Ubuntu OS', 'ubuntu-os', 87654321, 'pics/patents/Ubuntu-logo.png', 'Brant Meier', 'youngwebking@gmail.com', '724-923-3829', 0),
-(3, 'Google Chrome', 'google-chrome', 12348765, 'pics/patents/chrome-logo.png', 'Google', 'google@gmail.com', '', 1),
-(4, 'Firefox OS', 'firefox-os', 97531246, 'pics/patents/firefox-logo.png', 'Firefox ', 'fire@fox.com', '', 1),
-(5, '20x20 Rubik''s Cube', '20x20-rubiks-cube', 74853984, 'pics/patents/20x20cube.jpg', 'Brant Meier', 'youngwebking@gmail.com', '724-923-3829', 1),
-(6, 'Mecha Battle Suit', 'mecha-battle-suit', 83694328, 'pics/patents/avatar_ampsuit.jpg', 'Brant Meier', 'youngwebking@gmail.com', '724-923-3829', 1),
+(3, 'Google Chrome', 'google-chrome', 12348765, 'pics/patents/chrome-logo.png', 'Google', 'google@gmail.com', '', 0),
+(4, 'Firefox OS', 'firefox-os', 97531246, 'pics/patents/firefox-logo.png', 'Firefox ', 'fire@fox.com', '', 0),
+(5, '20x20 Rubik''s Cube', '20x20-rubiks-cube', 74853984, 'pics/patents/20x20cube.jpg', 'Brant Meier', 'youngwebking@gmail.com', '724-923-3829', 0),
+(6, 'Mecha Battle Suit', 'mecha-battle-suit', 83694328, 'pics/patents/avatar_ampsuit.jpg', 'Brant Meier', 'youngwebking@gmail.com', '724-923-3829', 0),
 (7, 'Metroid Prime', 'metroid-prime', 33333333, 'pics/patents/TallonMetroid.png', 'Chad Meier', 'chadragon@gmail.com', '724-923-3829', 0);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

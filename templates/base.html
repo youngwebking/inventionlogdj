@@ -1,9 +1,10 @@
 <html>
 <head>
-	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/main.css"/>
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/main.css" />
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script src="{{ STATIC_URL }}js/main.js"></script>
 	<title>{% block title %}{% endblock %} | Inventonlog</title>
 	{% block extrahead %}
@@ -25,6 +26,8 @@
   </script>
 </head>
 <body class="">
+<div id="background1"></div>
+<div id="background2"></div>
 {% load extra_tags %}
 <header class="">
 	<nav id="navbar" class="horizontal box center">
@@ -44,6 +47,7 @@
 						<option>Toolbox</option>
 						<option>Calendar</option>
 						<option>Planner</option>
+						<option>Music Player</option>
 					</select>
 				</li>
 				{% if user.username == 'admin' %}

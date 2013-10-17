@@ -1,6 +1,7 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.utils import simplejson
 from django.contrib.auth.models import User
 from employee.forms import RegistrationForm, LoginForm1, LoginForm2
 from django.contrib.auth import authenticate, login, logout
@@ -145,6 +146,11 @@ def LogoutRequest(request):
 	logout(request)
 	return HttpResponseRedirect('/')
 
+# ALL EMPLOYEES-----------------------------------------------------------
+def EmployeesAll(request):
+	context = None
+	return render_to_response('employeesall.html', context, context_instance=RequestContext(request))
+
 #admin--------------------------------------------------------------------
 def admin(request):
 	if request.user.is_superuser:
@@ -155,17 +161,20 @@ def admin(request):
 		complete_projects = projects.filter(status='C')
 		context = {'admin':admin, 'projects': projects,'pending':pending_projects, 'current':current_projects,'complete':complete_projects}
 		if request.method == 'POST':
-			new_projects = PotentialProject.objects.filter(assigned=False)
-			potential_project = new_projects.order_by('?')[0]
-			potential_project.assigned = True;
-			project_name = potential_project.project_name
-			slug = potential_project.slug
-			number = potential_project.number
-			patent_file = potential_project.patent_file
-			pm = get_next_employee('P')
-			project = Project(name=project_name,slug=slug,number=number,status='P',patentFile=patent_file,productionManager=pm)
-			project.save()
-			potential_project.save()
+			try:
+				new_projects = PotentialProject.objects.filter(assigned=False)
+				potential_project = new_projects.order_by('?')[0]
+				potential_project.assigned = True;
+				project_name = potential_project.project_name
+				slug = potential_project.slug
+				number = potential_project.number
+				patent_file = potential_project.patent_file
+				pm = get_next_employee('P')
+				project = Project(name=project_name,slug=slug,number=number,status='P',patentFile=patent_file,productionManager=pm)
+				project.save()
+				potential_project.save()
+			except IndexError:
+				messages.add_message(request, messages.ERROR, 'No more projects!')
 		return render_to_response('admin.html', context, context_instance=RequestContext(request))
 	return HttpResponseRedirect('/')
 	

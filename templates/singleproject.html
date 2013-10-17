@@ -12,7 +12,7 @@
       			{{ project.productionManager.name }}
       		</b>
       {% else %}
-      	{% if project.stl == None or project.dxf == None %}
+      	{% if project.stl == None or project.dxf == None or project.draftRejected%}
       		{% if project.draftsman.username == user.username %}<b class="red">{% endif %}
       			{{ project.draftsman.name }}
       		</b>
@@ -20,7 +20,7 @@
       		{% if project.productionManager.username == user.username %}<b class="red">{% endif %}
       			{{ project.productionManager.name }}
       		</b>
-      	{% elif project.modelImgTop == None or project.modelImg34 == None or project.modelImgFront == None or project.modelImgRight == None %}
+      	{% elif project.modelImgTop == None or project.modelImg34 == None or project.modelImgFront == None or project.modelImgRight == None or project.modelRejected %}
       		{% if project.modelBuilder.username == user.username %}<b class="red">{% endif %}
       			{{ project.modelBuilder.name }}
       		</b>
@@ -115,14 +115,14 @@
 		<!--EDIT----------------------------------------------------->
 		<h3>Edit/Accept</h3>
 			<div>
-		   {% if project.draftsman.username == user.username %}
+		   {% if project.draftsman.username == user.username or project.productionManager.username == user.username %}
 				<a href="/projects/draft-upload/{{ project.slug }}/"><input class="btn" type="button" value="Upload Draft Files"></a>
-		   {% elif project.machineTech.username == user.username %}
+		   {% elif project.machineTech.username == user.username or project.productionManager.username == user.username %}
 		   	<!--<br />
 				<p>Upload Prototype Pictures</p>
 				<a href="/projects/prototype-upload/{{ project.slug }}/">Upload Prototype Pictures</a>-->
 				
-		   {% elif project.modelBuilder.username == user.username %}
+		   {% elif project.modelBuilder.username == user.username or project.productionManager.username == user.username %}
 				<a href="/projects/model-upload/{{ project.slug }}/"><input class="btn" type="button" value="Upload Model Images"></a>
 				
 			{% elif project.productionManager.username == user.username %}
@@ -164,6 +164,14 @@
 					{% endif %}
 				{% endif %}
 		   {% endif %}
+			</div>
+		<h3>Comments</h3>
+			<div>
+				<ol>
+				{% for comment in comments %}
+					<li>{{ comment }}</li>
+				{% endfor %}
+				</ol>
 			</div>
       </div>
    </div>

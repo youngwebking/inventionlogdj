@@ -36,6 +36,8 @@
 			{% endif %}
 			
 		{% endif %}
+		{% load gravatar %}
+		{{ gravatar_url }}
 		{% block extracontent %}
 		{% endblock %}
 	</div>

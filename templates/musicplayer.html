@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}Music Player{% endblock %}
+{% block extrahead %}
+<link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}css/music.css" />
+<script src="{{ STATIC_URL }}js/music.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#songbtn').click(function(){
+			$(this).load('song.html');
+		});
+	});
+</script>
+{% endblock %}
+{% block content %}
+<div class="box horizontal">
+<section id="music-section" class="container box fill">
+	<button onclick="Dajaxice.music.getSongBySlug(Dajax.process);">Click here!</button>
+	<button id="button" onclick="Dajaxice.music.assign_example(Dajax.process);">Click here!</button>
+	<div id="songbtn">Click here!</div>
+	<div class="alert"></div>
+	{% if playlist != None %}
+		{% include playlist.html %}
+	{% elif song != None %}
+		{% include song.html %}
+	{% else %}
+		<h3>All Songs</h3>
+		<ol>
+			{% for song in songs %}
+			<li><a href="#!/?song={{ song.slug }}">{{ song }}</a></li>
+			{% endfor %}
+		</ol>
+		<a href="#!/upload-song/"><input type="button" class="btn" value="Upload Song"></a>
+	{% endif %}
+</section>
+<aside class="box container">
+	<h3>My Playlists:</h3>
+	<ol>
+		{% for playlist in playlists %}
+			<li><a href="#!/?playlist={{ playlist.slug }}">{{ playlist }}</a></li>
+		{% endfor %}
+	</ol>
+</aside>
+</div>
+<footer>
+	<div id="player" class="center">
+		<div id="music-contols" class="box center">
+			<ul class="horizontal box center">
+				<li class="box"><a id="previous"><<</a></li>
+				<li class="box"><a id="play">Play</a></li>
+				<li class="box"><a id="next">>></a></li>
+			</ul>
+		</div>
+		<div class="box horizontal">
+			<div class="box">
+				<p id="elapsed-time">0:00</p>
+			</div>
+			<div id="progress-bar" class="box">
+				<div id="elapsed">
+					<div id="scrubber"></div>
+				</div>
+				<input type="range" step="any" id="seekbar"></input>
+			</div>
+			<div class="box">
+				<p id="song-dur">0:00</p>
+			</div>
+		</div>
+		{% if song != None %}
+			<audio id="song">
+				<source src="{{ song.song.url }}" type="audio/m4a">
+				<source src="{{ song.song.url }}" type="audio/mpeg">
+				<source src="{{ song.song.url }}" type="audio/mp3">
+				<source src="{{ song.song.url }}" type="audio/mp4">
+				<source src="{{ song.song.url }}" type="audio/ogg">
+				<source src="{{ song.song.url }}" type="audio/wav">
+				<embed src="{{ song.song.url }}">
+				Your browser does not support the audio element.
+			</audio>
+		
+		{% endif %}
+	</div>
+	<div id="music-queue">
+		<ul>
+			{% for item in items %}
+				<li><div class="queue-item">
+					<a href="{item.song.url}">{{ item.name }}</a>
+					
+				</div></li>
+			{% endfor %}
+		</ul>
+	</div>
+</footer>
+<script type="text/javascript"> 
+   var song = "{{ song }}";
+   var playlist = "{{ playlist }}";
+</script>
+{% endblock %}

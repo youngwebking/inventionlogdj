@@ -134,6 +134,8 @@ TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
     'django.contrib.messages.context_processors.messages',
 )
 
+GRAVATAR_DEFAULT_URL = "/static/img/profile-default.png"
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -145,6 +147,7 @@ INSTALLED_APPS = (
     'dajax',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
+    'django_gravatar',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'static_pages',

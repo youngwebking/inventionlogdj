@@ -1,0 +1,6 @@
+<h3 id="playlist-title">{{ playlist }}</h3>
+<ol id="song-list">
+{% for song in songs %}
+	<li><a href="#!/?song={{ song.slug }}">{{ song }}</a></li>
+{% endfor %}
+</ol>

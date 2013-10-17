@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Upload Song{% endblock %}
+{% block extrahead %}
+<link rel="stylesheet" type="text/css" href="/static/css/form.css">
+{% endblock %}
+{% block content %}
+<form class="form-container" action="" method="post" enctype="multipart/form-data">
+<h3>Upload New Song</h3>
+{% csrf_token %}
+	<p>{% if form.errors %}{% endif %}</p>
+	<ol>
+		<li><p {% if form.name.errors %}class="form-error"{% endif %}>*Song Name: {{ form.name }} {{ form.name.errors }}</p></li>
+		
+		<li><p {% if form.artist.errors %}class="form-error"{% endif %}>*Artist Name: {{ form.artist }} {{ form.artist.errors }}</p></li>
+		
+		<li><p {% if form.art.errors %}class="form-error"{% endif %}>Song Art: {{ form.art }} {{ form.art.errors }}</p></li>
+		
+		<li><p {% if form.song.errors %}class="form-error"{% endif %}>*Song File: {{ form.song }} {{ form.song.errors }}</p></li>
+		<br />
+		
+		<li><input type="submit" value="Submit!" class="btn btn-large btn-primary"></li>
+	</ol>
+</form>
+{% endblock %}

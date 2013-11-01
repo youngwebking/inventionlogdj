@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.files.storage import FileSystemStorage
+from datetime import date, datetime, timedelta
 
 PATENTS  = "pics/patents"
 DRAFTS   = "pics/drafts"
@@ -31,7 +32,7 @@ class Project(models.Model):
 	number = models.IntegerField(blank=True)
 	status = models.CharField(max_length=1, choices=STATUS)
 	startDate = models.DateField(auto_now=False, auto_now_add=True)
-	deadline = models.DateField(blank=True, null=True)
+	deadline = models.DateField(default=datetime.now()+timedelta(days=30),blank=True, null=True)
 	
 	#draftUploadDate = models.DateField(auto_now=True, auto_now_add=False, blank=True, null=True)
 	#draftApproveDate = models.DateField(auto_now=True, auto_now_add=False, blank=True, null=True)
@@ -93,6 +94,11 @@ class Project(models.Model):
 	modelRejected = models.BooleanField()
 	finalApproved = models.BooleanField()
 	
+	def is_late(self):
+		if date.today() > self.deadline:
+			return True
+		return False
+	
 	def accept_project(self, d, t, b):
 		self.draftsman = d
 		self.machineTech = t
@@ -104,28 +110,34 @@ class Project(models.Model):
 	
 	def approve_draft(self):
 		self.draftApproved = True
+		self.draftRejected = False
 		self.percent_complete = 25
 		self.save()
 		
 	def reject_draft(self):
+		self.draftApproved = False
 		self.draftRejected = True
 		self.save()
 		
 	def approve_prototype(self):
 		self.prototypeApproved = True
+		self.prototypeRejected = False
 		self.percent_complete = 50
 		self.save()
 	
 	def reject_prototype(self):
+		self.prototypeApproved = False
 		self.prototypeRejected = True
 		self.save()
 	
 	def approve_model(self):
 		self.modelApproved = True
+		self.modelRejected = False
 		self.percent_complete = 75
 		self.save()
 		
 	def reject_model(self):
+		self.modelApproved = False
 		self.modelRejected = True
 		self.save()
 	
@@ -168,3 +180,11 @@ class Revolve(models.Model):
 	
 	#def __unicode__(self):
 		#return self.name
+		
+class Comment(models.Model):
+	sender = models.ForeignKey("employee.Employee")
+	project = models.ForeignKey("Project")
+	created_at = models.DateTimeField(auto_now=False, auto_now_add=True, blank=True)
+	updated_at = models.DateTimeField(auto_now=True, auto_now_add=True, blank=True)
+	content = models.TextField(blank=False, null=False)
+	

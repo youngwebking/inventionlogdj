@@ -4,8 +4,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import simplejson
 from django.template import RequestContext
 from django.template.defaultfilters import slugify
-from project.models import Project, Stl, Dxf, Image
-from project.forms import UploadDraftForm, UploadModelForm, ProjectSearchForm
+from project.models import Project, Stl, Dxf, Image, Comment
+from project.forms import UploadDraftForm, UploadModelForm, ProjectSearchForm, CommentForm
+from employee.models import Employee
 from employee.helpers import get_random_employee, get_next_employee
 import re
 
@@ -14,7 +15,7 @@ def upload_draft(request, projectslug):
 	project = Project.objects.get(slug=projectslug)
 	if not project.finalApproved:
 		if request.user.is_authenticated():
-			if request.user.username == project.draftsman.username:
+			if request.user.username == project.draftsman.username or request.user.username == project.productionManager.username:
 				if request.method == 'POST':
 					form = UploadDraftForm(request.POST, request.FILES)
 					if form.is_valid():
@@ -43,10 +44,16 @@ def upload_model(request, projectslug):
 	project = Project.objects.get(slug=projectslug)
 	if not project.finalApproved:
 		if request.user.is_authenticated():
-			if request.user.username == project.modelBuilder.username:
+			if request.user.username == project.modelBuilder.username or request.user.username == project.productionManager.username:
 				if request.method == 'POST':
 					form = UploadModelForm(request.POST, request.FILES)
 					if form.is_valid():
+						try:
+							newtop = Image(image=request.FILES['topView'])
+							newtop.save()
+						except:
+							pass
+							
 						try:
 							new34 = Image(image=request.FILES['View34'])
 							new34.save()
@@ -130,7 +137,7 @@ def RejectDraft(request, projectslug):
 	project = Project.objects.get(slug=projectslug)
 	if not project.finalApproved:
 		if request.user.username == project.productionManager.username:
-			project.approve_draft()
+			project.reject_draft()
 			return HttpResponseRedirect('/projects/' + projectslug + '/')
 	return HttpResponseRedirect('/')
 
@@ -204,5 +211,17 @@ def ProjectsAll(request):
 	
 def SpecificProject(request, projectslug):
 	project = Project.objects.get(slug=projectslug)
-	context = {'project': project}
+	if request.method == 'POST':
+		form = CommentForm(request.POST)
+		if form.is_valid():
+			content = form.cleaned_data['content']
+			sender = Employee.objects.get(username=request.user.username)
+			new_comment = Comment(sender=sender,project=project,content=content)
+			new_comment.save()
+			context = {'project':project,'form':form}
+			return HttpResponseRedirect('/projects/' + projectslug + '/')
+	form = CommentForm()
+	comments = Comment.objects.filter(project=project)
+	context = {'project':project,'comments':comments,'form':form}
 	return render_to_response('singleproject.html', context, context_instance=RequestContext(request))
+

@@ -14,6 +14,8 @@ from django import template
 import MySQLdb
 import _mysql
 import re
+from datetime import date
+
 
 # HELPERS
 
@@ -156,10 +158,11 @@ def admin(request):
 	if request.user.is_superuser:
 		admin = User.objects.get(username='admin')
 		projects = Project.objects.all()
+		lates = projects.filter(percent_complete=0)
 		pending_projects = projects.filter(status='P')
 		current_projects = projects.filter(status='I')
 		complete_projects = projects.filter(status='C')
-		context = {'admin':admin, 'projects': projects,'pending':pending_projects, 'current':current_projects,'complete':complete_projects}
+		context = {'admin':admin,'lates':lates,'projects':projects,'pending':pending_projects, 'current':current_projects,'complete':complete_projects}
 		if request.method == 'POST':
 			try:
 				new_projects = PotentialProject.objects.filter(assigned=False)
@@ -208,12 +211,13 @@ def SpecificPM(request, username):
 		pending_projects = all_projects.filter(accepted=False)
 		projects = all_projects.filter(accepted=True)
 		projects = projects.filter(finalApproved=False)
+		lates = projects.filter()
 	except:
 		messages.error(request, 'That production manager does not exist!')
 		raise Http404("That production manager does not exist!")
 	if request.user.username == username:
 		pass
-	context = {'pm': pm, 'employee': employee, 'projects': projects, 'pending': pending_projects}
+	context = {'pm':pm,'employee': employee,'lates':lates,'projects':projects,'pending':pending_projects}
 	return render_to_response('singlepm.html', context, context_instance=RequestContext(request))
 		
 
@@ -230,7 +234,8 @@ def SpecificDraftsman(request, username):
 		projects = Project.objects.filter(draftsman=draftsman.id)
 		projects = projects.filter(accepted=True)
 		projects = projects.filter(finalApproved=False)
-		context = {'draftsman': draftsman, 'projects': projects, 'employee': employee}
+		lates = projects.filter()
+		context = {'draftsman':draftsman,'lates':lates,'projects':projects,'employee':employee}
 	except:
 		messages.error(request, 'That draftsman does not exist!')
 		raise Http404("That draftsman does not exist!")
@@ -249,7 +254,8 @@ def SpecificMT(request, username):
 		projects = Project.objects.filter(machineTech=mt.id)
 		projects = projects.filter(accepted=True)
 		projects = projects.filter(finalApproved=False)
-		context = {'mt': mt, 'projects': projects, 'employee': employee}
+		lates = projects.filter()
+		context = {'mt':mt,'lates':lates,'projects':projects,'employee':employee}
 	except:
 		messages.error(request, 'That Machine Technician does not exist!')
 		raise Http404("That Machine Technician does not exist!")
@@ -258,7 +264,7 @@ def SpecificMT(request, username):
 # MODEL BUILDERS ------------------------------------------------------------------
 def MBsAll(request):
 	mbs = ModelBuilder.objects.all()
-	context = {'mbs': mbs}
+	context = {'mbs':mbs}
 	return render_to_response('../templates/mbsall.html', context, context_instance=RequestContext(request))
 	
 def SpecificMB(request, username):
@@ -268,7 +274,8 @@ def SpecificMB(request, username):
 		projects = Project.objects.filter(modelBuilder=mb.id)
 		projects = projects.filter(accepted=True)
 		projects = projects.filter(finalApproved=False)
-		context = {'mb': mb, 'projects': projects, 'employee': employee}
+		lates = projects.filter()
+		context = {'mb': mb,'lates':lates,'projects': projects,'employee': employee}
 	except:
 		messages.error(request, 'That Model Builder does not exist!')
 		raise Http404("That Model Builder does not exist!")

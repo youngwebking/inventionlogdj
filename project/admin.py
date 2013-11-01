@@ -1,5 +1,5 @@
 from django.contrib import admin
-from project.models import PotentialProject, Project, Stl, Dxf
+from project.models import PotentialProject, Project, Stl, Dxf, Comment
 
 class PotentialProjectAdmin(admin.ModelAdmin):
 	prepopulated_fields = {'slug': ('project_name',)}
@@ -18,8 +18,13 @@ class StlAdmin(admin.ModelAdmin):
 class DxfAdmin(admin.ModelAdmin):
 	list_display = ('dxf',)
 	search_fields = ['dxf']
+	
+class CommentAdmin(admin.ModelAdmin):
+	list_display = ('sender',)
+	search_fields = ['sender', 'content']
 
 admin.site.register(PotentialProject, PotentialProjectAdmin)
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(Stl, StlAdmin)
 admin.site.register(Dxf, DxfAdmin)
+admin.site.register(Comment, CommentAdmin)

@@ -3,20 +3,24 @@
 	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/main.css" />
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+	<script src="http://code.jquery.com/jquery-2.0.3.js"></script>
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 	<script src="{{ STATIC_URL }}js/main.js"></script>
 	<title>{% block title %}{% endblock %} | Inventonlog</title>
 	{% block extrahead %}
 	{% endblock %}
 	<script>
-		$(function() {
+		/*$(function() {
 		$( "#datepicker" ).datepicker();
 		});
 		
 		$(function() {
 		$( "#dialog" ).dialog();
-		});
+		});*/
 		
 		$(function() {
 		$( "#accordion" ).accordion(
@@ -36,32 +40,36 @@
 			<li id="logo-text"><a href="/" id="logo-text-link">INVENTIONLAND</a></li>
 		</ul>
 		<ul id="nav-links" class="horizontal box">
-		   <li id="nav-link"><a href="/employees/" ><p class="nav-button">Employees</p></a></li>
-		   <li id="nav-link"><a href="/projects/" ><p class="nav-button">Projects</p></a></li>
+		   <li id="nav-link"><a href="/employees/" ><p class="nav-btn left-round">Employees&nbsp;</p></a></li>
+		   <li class="vr-nav"></li>
+		   <li id="nav-link"><a href="/projects/" ><p class="nav-btn right-round">&nbsp;Projects</p></a></li>
 		</ul>
 		<div class="fill"></div>
 		<ul id="login-links" class="horizontal box">
 			{% if user.is_authenticated %}
-				<li class="nav-dropdown">
-					<select id="toolbox" class="nav-button">
-						<option>Toolbox</option>
-						<option>Calendar</option>
-						<option>Planner</option>
-						<option>Music Player</option>
-					</select>
-				</li>
-				{% if user.username == 'admin' %}
-					<li id="login-link"><a href="/admin-profile"><p class="nav-button">Profile</p></a></li>
-				{% else %}
-				{% with username=user.username job=user.employee.job %}
-					<li id="login-link"><a href="{% get_template_profile_link username job %}"><p class="nav-button">Profile</p></a></li>
-				{% endwith %}
-				{% endif %}
-				<li id="login-link"><a href="/logout/"><p class="nav-button">Logout</p></a></li>
+			<li class="nav-dropdown">
+				<select id="toolbox" class="nav-button">
+					<option>Toolbox</option>
+					<option>Calendar</option>
+					<option>Planner</option>
+					<option>Music Player</option>
+				</select>
+			</li>
+			{% if user.username == 'admin' %}
+			<li id="login-link"><a href="/admin-profile"><p class="nav-btn">Profile&nbsp;</p></a></li>
 			{% else %}
-		   	<li id="login-link"><a href="/login/"><p class="nav-button">Login</p></a></li>
-		   	<li id="login-link"><a href="/register/"><p class="nav-button">Register</p></a></li>
-		   {% endif %}
+			{% with username=user.username job=user.employee.job %}
+			<li class="vr-nav"></li>
+			<li id="login-link"><a href="{% get_template_profile_link username job %}"><p class="nav-btn">Profile&nbsp;</p></a></li>
+			{% endwith %}
+			{% endif %}
+			<li class="vr-nav"></li>
+			<li id="login-link"><a href="/logout/"><p class="nav-btn right-round">&nbsp;Logout</p></a></li>
+			{% else %}
+	   	<li id="login-link"><a href="/login/"><p class="nav-btn left-round">Login&nbsp;</p></a></li>
+	   	<li class="vr-nav"></li>
+	   	<li id="login-link"><a href="/register/"><p class="nav-btn right-round">&nbsp;Register</p></a></li>
+	   	{% endif %}
 		</ul>
 	</nav>
 </header>

@@ -3,7 +3,6 @@
 {% block extrahead %}
 {% endblock %}
 {% block content %}
-
 	<div id="singleprojectinfo" class="container box">
 		<h3>{{ project }}: {{ project.percent_complete }}% Complete</h3>
 		<p>{% if project.status == 'I' or project.status == 'C' %}<b class="green">{% elif project.status == 'P' %}<b class="red">{% endif %}Status:</b> {{ project.get_status_display }}(
@@ -16,7 +15,7 @@
       		{% if project.draftsman.username == user.username %}<b class="red">{% endif %}
       			{{ project.draftsman.name }}
       		</b>
-      	{% elif project.stl != None and project.dxf != None and project.draftApproved != True %}
+      	{% elif project.stl != None and project.dxf != None and not project.draftApproved %}
       		{% if project.productionManager.username == user.username %}<b class="red">{% endif %}
       			{{ project.productionManager.name }}
       		</b>
@@ -33,10 +32,13 @@
       	{% endif %}
 		{% endif %}      
       )</p>
+      <br>
+      
 	<div id="accordion">
 		<!--GENERAL----------------------------------------------------->
 		<h3>General</h3>
       <div id="accordion-tab general-tab">
+      	<p>Project Deadline: {{ project.deadline }}</p>
       	<p>Production Manager in charge: {% if project.productionManager != None %}<a href="/employees/production-managers/{{ project.productionManager.username }}">{{ project.productionManager }}</a>{% else %}None{% endif %}</p>
       {% if project.accepted %}
 		   <p>Project draftsman: {% if project.draftsman != None %}<a href="/employees/draftsmen/{{ project.draftsman.username }}">{{ project.draftsman }}</a>{% else %}None{% endif %}</p>
@@ -52,6 +54,9 @@
 			<div>
 		   <p>Stl File: {% if project.stl != None %}<a href="{{ project.stl.stl.url }}">download</a>{% else %}None{% endif %}</p>
 		   <p>Dxf File: {% if project.dxf != None %}<a href="{{ project.dxf.dxf.url }}">download</a>{% else %}None{% endif %}</p>
+		   {% if project.draftsman.username == user.username or project.productionManager.username == user.username and project.accepted %}
+				<a href="/projects/draft-upload/{{ project.slug }}/"><input class="btn" type="button" value="Upload Draft Files"></a>
+			{% endif %}
 			</div>
 		
 		<!--MODEL----------------------------------------------------->
@@ -108,24 +113,17 @@
 				</div>
 			{% endif %}
 			</div>
+			{% if project.modelBuilder.username == user.username or project.productionManager.username == user.username and project.accepted %}
+			<a href="/projects/model-upload/{{ project.slug }}/"><input class="btn" type="button" value="Upload Model Images"></a>
+			{% endif %}
 		</div>
 		{% endif %}
 		{% endif %}
 		
+		{% if project.productionManager.username == user.username and not project.finalApproved %}
 		<!--EDIT----------------------------------------------------->
-		<h3>Edit/Accept</h3>
+		<h3>Approve Stuff</h3>
 			<div>
-		   {% if project.draftsman.username == user.username or project.productionManager.username == user.username %}
-				<a href="/projects/draft-upload/{{ project.slug }}/"><input class="btn" type="button" value="Upload Draft Files"></a>
-		   {% elif project.machineTech.username == user.username or project.productionManager.username == user.username %}
-		   	<!--<br />
-				<p>Upload Prototype Pictures</p>
-				<a href="/projects/prototype-upload/{{ project.slug }}/">Upload Prototype Pictures</a>-->
-				
-		   {% elif project.modelBuilder.username == user.username or project.productionManager.username == user.username %}
-				<a href="/projects/model-upload/{{ project.slug }}/"><input class="btn" type="button" value="Upload Model Images"></a>
-				
-			{% elif project.productionManager.username == user.username %}
 				{% if not project.accepted %}
 					<form action="/projects/accept/{{ project.slug }}/" method="post">
 						{% csrf_token %}
@@ -140,22 +138,26 @@
 						{% csrf_token %}
 						<input type="submit" value="Reject Drafts" class="btn" />
 					</form>
+					{% if project.draftApproved %}
 					<form action="/projects/approve-prototype/{{ project.slug }}/" method="post">
 						{% csrf_token %}
 						<input type="submit" value="Approve Prototype Parts" class="btn" />
 					</form>
-					<form action="/projects/reject-draft/{{ project.slug }}/" method="post">
+					<form action="/projects/reject-prototype/{{ project.slug }}/" method="post">
 						{% csrf_token %}
 						<input type="submit" value="Reject Prototype" class="btn" />
 					</form>
+					{% endif %}
+					{% if project.prototypeApproved %}
 					<form action="/projects/approve-model/{{ project.slug }}/" method="post">
 						{% csrf_token %}
 						<input type="submit" value="Approve Model" class="btn" />
 					</form>
-					<form action="/projects/reject-draft/{{ project.slug }}/" method="post">
+					<form action="/projects/reject-model/{{ project.slug }}/" method="post">
 						{% csrf_token %}
 						<input type="submit" value="Reject Model" class="btn" />
 					</form>
+					{% endif %}
 					{% if project.draftApproved and project.prototypeApproved and project.modelApproved %}
 					<form action="/projects/final-approve/{{ project.slug }}/" method="post">
 						{% csrf_token %}
@@ -163,15 +165,30 @@
 					</form>
 					{% endif %}
 				{% endif %}
-		   {% endif %}
 			</div>
+			{% endif %}
+			
+		<!--COMMENTS------------------------------------------------>
 		<h3>Comments</h3>
 			<div>
-				<ol>
+				<ol id="comments">
 				{% for comment in comments %}
-					<li>{{ comment }}</li>
+					<li id="comment">
+						<p><!<a href="{#% get_template_profile_link comment.sender.username comment.sender.job %}"><a href="/employees/production-managers/{{ comment.sender.username }}">{{ comment.sender }}</a>({{ comment.sender.get_job_display }}):</p>
+						<p>{{ comment.content }}</p>
+						<sub>{% if comment.created_at != comment.updated_at %}Updated at: {{ comment.updated_at }}{% else %}Posted at: {{ comment.created_at }}{% endif %}</sub>
+					</li>
 				{% endfor %}
 				</ol>
+				{% if project.productionManager.username == user.username and not project.finalApproved %}
+				<form action="" method="post">
+					{% csrf_token %}
+					{% if form.content.errors %}<p class="form-error">{{ form.content.errors }}</p>{% endif %}
+					<label for="content"{% if form.content.errors %} class="form-error"{% endif %}>Message:</label>
+					{{ form.content }}
+					<input class="btn" type="submit" value="Add Comment">
+				</form>
+				{% endif %}
 			</div>
       </div>
    </div>

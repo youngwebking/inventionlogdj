@@ -17,6 +17,8 @@ body{
 	background-position: center top;
 	background-repeat: no-repeat;
 	background-size: 1400px 1000px;*/
+	width: 100%;
+	height: 100%;
 	text-align: center;
 	color: #000;
 	display: box;
@@ -46,11 +48,10 @@ img{
 	border: 0px;
 }
 container{
-	max-width: 1000px;
+	width: 1000px;
 	-webkit-box-orient: vertical;
 	-moz-box-orient: vertical;
-}
-container *{
+	text-align: left;
 }
 a:link{
 	color: blue;
@@ -80,6 +81,10 @@ ol{
 ol li{
 	
 }
+li{
+	white-space:nowrap;
+	border-collapse: collapse;
+}
 p{
 	color: #111;
 	text-align: left;
@@ -88,9 +93,15 @@ sub{
 	
 }
 header{
-	background-color: #000;
 	height: 36px;
 	width: 100%;
+	background: #000; /* Old browsers */
+	background: -moz-linear-gradient(top, #222 0%, #000000 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#222), color-stop(100%,#000000)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #222 0%,#000000 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #222 0%,#000000 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #222 0%,#000000 100%); /* IE10+ */
+	background: linear-gradient(to bottom, #222 0%,#000000 100%); /* W3C */
 }
 footer{
 	max-width: 1000px;
@@ -103,10 +114,12 @@ aside{
 	
 }
 #nav-links li{
-	margin-right: 3px;
+	margin-right: -1px;
+	margin-left: 1px;
 }
 #login-links li{
-	margin-left: 3px;
+	margin-right: 1px;
+	margin-left: -1px;
 }
 #accordion div a:link{
 	color: blue;
@@ -151,10 +164,10 @@ aside{
 	
 }
 #nav-links{
-	margin-top: 8px;
+	margin-top: 5px;
 }
 #login-links{
-	margin-top: 8px;
+	margin-top: 5px;
 }
 #form-field{
 }
@@ -183,6 +196,16 @@ aside{
 	-webkit-box-flex: 1;
 	-moz-box-flex: 1;
 }
+#comments li:nth-child(odd){
+	background: #ccc;
+}
+#comments li:nth-child(even){
+	background: #fff;
+}
+#comment{
+	padding: 10px;
+	border-radius: 2px;
+}
 #register_div{
 	border: 1px solid #000;
 }
@@ -201,14 +224,14 @@ aside{
 }
 #leftView{
 	margin-left: 0;
-	margin-top: 0px;
+	margin-top: 3px;
 }
 #frontView{
-	margin-top: 0px;
+	margin-top: 3px;
 }
 #rightView{
 	margin-right: 0;
-	margin-top: 0px;
+	margin-top: 3px;
 }
 #exampleView{
 	margin-top: 3px;
@@ -240,9 +263,15 @@ aside{
 	max-height: 100px;
 }
 .box{
-	display: -webkit-box;
 	display: box;
+	display: -webkit-box;
 	display: -moz-box;
+}
+.left{
+	float: left;
+}
+.right{
+	float: right;
 }
 .inline{
 	display: inline-block;
@@ -257,12 +286,21 @@ aside{
 }
 .fill{
 	-webkit-box-flex: 1;
+	-moz-box-flex: 1;
+}
+.flex{
+	-webkit-box-flex: 1;
+	-moz-box-flex: 1;
 }
 .center{
 	margin: 0 auto;
 }
+.center-contents{
+	text-align: center;
+}
 .center-all{
 	-webkit-box-pack: center;
+	-moz-box-pack: center;
 }
 .dropdown{
 	border-radius: 3px;
@@ -279,33 +317,59 @@ aside{
 	background-color: black;
 	border: 3px solid green;
 }
-.nav-button{
-	border-radius: 6px;
-	border: 1px solid #999;
-	background-color: #252525;
-	color: #fff;
-	height: 35px;
+.left-round{
+	border-radius: 6px 0 0 6px;
+}
+.right-round{
+	border-radius: 0 6px 6px 0;
+}
+.border-right{
+	border-right: 1px solid #eee;
+}
+.border-left{
+	border-left: 1px solid #eee;
+}
+.nav-btn{
+	background-color: inherit;
+	color: #eee;
+	height: 20px;
 	padding: 3px;
-	margin-top: 5px;
-	display: inline;
+}
+.nav-btn:hover{
+	color: #eee;
+	height: 20px;
+	padding: 3px;
+	background: #222; /* Old browsers */
+	background: -moz-linear-gradient(top, #000000 0%, #222 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#000000), color-stop(100%,#222)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #000000 0%,#222 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #000000 0%,#222 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #000000 0%,#222 100%); /* IE10+ */
+	background: linear-gradient(to bottom, #000000 0%,#222 100%); /* W3C */
 }
 .btn{
 	border-radius: 3px;
 	border: 1px solid #000;
-	background-color: #999;
 	padding: 3px;
 	margin-top: 10px;
+	color: #eee;
 	cursor: pointer;
+	background: #111; /* Old browsers */
+	background: -moz-linear-gradient(top, #444 0%, #111 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#444), color-stop(100%,#111)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #444 0%,#111 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #444 0%,#111 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #444 0%,#111 100%); /* IE10+ */
+	background: linear-gradient(to bottom, #444 0%,#111 100%); /* W3C */
 }
 .btn-large{
 	height: 40px;
 	padding: 6px;
 }
 .btn-primary{
-	background-color: #000;
-	color: #999;
+	color: #eee;
 	font-size: 1.5em;
-	border-radius: 10px;
+	border-radius: 8px;
 	border: 1px solid #999;
 }
 .form-container{
@@ -314,11 +378,12 @@ aside{
 	text-align: center;
 	margin-top: 3px;
 	padding: 100px 20px 100px 20px;
-	width: 500px;
 	
 }
-.form{
-	
+.inner-form{
+	margin: 20px auto 0px auto;
+	width: 300px;
+	text-align: left;
 }
 .textbox{
 	border-radius: 3px;
@@ -330,10 +395,20 @@ aside{
 .container{
 	background-color: #e0e0e0;
 	border-radius: 6px;
-	margin-top: 6px;
+	margin: 6px 3px 0px 3px;
 	padding: 20px 10px 20px 10px;
-	opacity: .8;
 	opacity: 1;
+}
+.vr{
+	width:0;
+	height: 100px;
+	border: 1px inset #eeeeee;
+}
+.vr-nav{
+	width: 0px;
+	height: 24px;
+	margin: 0px 0 0 0;
+	border: 1px inset #333;
 }
 .form-error{
 	color: red;
@@ -361,6 +436,7 @@ aside{
 .info{
 	background-color: #e0e0e0;
 	border: 2px solid #e0e0e0;
+	border-top: 0px;
 	color: #111;
 	padding: 3px;
 	width: 100%;
@@ -369,6 +445,7 @@ aside{
 .success{
 	background-color: #d5ffd5;
 	border: 2px solid green;
+	border-top: 0px;
 	color: green;
 	padding: 3px;
 	width: 100%;
@@ -377,6 +454,7 @@ aside{
 .warning{
 	background-color: #e0e0e0;
 	border: 2px solid #e0e0e0;
+	border-top: 0px;
 	color: red;
 	padding: 3px;
 	width: 100%;
@@ -385,6 +463,7 @@ aside{
 .error{
 	background-color: #ffbfbf;
 	border: 2px solid red;
+	border-top: 0px;
 	color: red;
 	padding: 3px;
 	width: 100%;
@@ -394,10 +473,6 @@ aside{
 	color: gray;
 }
 .vortex{
-	background-color: #e0e0e0;
-	border-radius: 6px;
-	margin-right: 6px;
-	margin-top: 3px;
 	padding: 20px 10px 20px 10px;
 }
 

@@ -43,6 +43,13 @@
 	</div>
 	{% if user.employee.username == employee.username and user.employee.job != 'M' %}
 		<aside id="queue" class="container box">
+			<h4>Late Projects</h4>
+			<ol class="center">
+				{% for late in lates %}
+					<li><a href="/projects/{{ late.slug }}">{{ late }}</a></li>
+				{% endfor %}
+			</ol>
+			<br />
 			<h4>Current Projects</h4>
 			<ol class="center">
 				{% for project in projects %}

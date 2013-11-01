@@ -5,7 +5,7 @@
 {% endblock %}
 {% block content %}
 <div class="box horizontal center">
-<div class="container vortex">
+<div class="container box vortex">
 <canvas id="vortex" width="289" height="262"></canvas>
     <script>
       window.requestAnimFrame = (function(callback) {
@@ -94,18 +94,22 @@
 
     </script>
 </div>
-<form class="form-container" action="" method="post">
+<div class="container box flex center-contents">
+<h1 class="center-contents">Login</h1>
+<form class="form-container center-contents" action="" method="post">
 	{% csrf_token %}
 	<ol>
-	<p>Question: {{ employee.question }}</p>
-	<li><div class="register_div left">
-		{% if form.answer.errors %}<p class="form-error">{{ form.answer.errors }}</p>{% endif %}
-		<label for="answer"{% if form.answer.errors %} class="form-error"{% endif %}>Answer:</label>
-		<p>{{ form.answer }}</p>
-	</div></li>
-	
-	<li><p><input type="submit" value="Login!" class="btn btn-large btn-primary"></p></li>
+		<li class="center-contents">
+			<p>Question: {{ employee.question }}</p>
+		</li>
+		<li class="center-contents">
+			{% if form.answer.errors %}<p class="form-error">{{ form.answer.errors }}</p>{% endif %}
+			<label for="answer"{% if form.answer.errors %} class="form-error"{% endif %}>Answer:</label>
+			{{ form.answer }}
+		</li>
+		<li class="center-contents"><input type="submit" value="Login!" class="btn btn-large btn-primary"></li>
 	</ol>
 </form>
+</div>
 </div>
 {% endblock %}

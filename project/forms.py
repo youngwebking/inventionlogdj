@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from project.models import Project
+from project.models import Project, Comment
 	
 class UploadDraftForm(forms.Form):
 
@@ -26,3 +26,6 @@ class ProjectSearchForm(forms.Form):
 	
 	searchbox = forms.CharField(max_length=100,required=False)
 	category = forms.ChoiceField(choices=CATEGORY_CHOICES)
+	
+class CommentForm(forms.Form):
+	content = forms.CharField(widget=forms.Textarea)
